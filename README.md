@@ -153,3 +153,10 @@ rm -rf apps
 cd kazoo
 ./sup crossbar_maintenance init_apps /home/user/apps http://kazoo.kazoo:8000/v2
 ```
+
+TODO
+====
+
+1. Make Couchdb database persistent
+2. Add Nginx to proxy requests inside Kazoo instance
+3. Add rules to route RTP traffic inside Kazoo instance
