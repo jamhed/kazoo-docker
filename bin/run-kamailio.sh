@@ -19,3 +19,7 @@ docker run $FLAGS \
 	--env NETWORK=$NETWORK \
 	--env RABBITMQ=$RABBITMQ \
 	2600hz/kamailio
+
+IP=$(bin/get-ip.sh $NETWORK $NAME)
+echo -n "forwarding sip port 5060 to kamailio $IP "
+iptables -t nat -A PREROUTING -p udp --dport 5060 -j DNAT --to-destination $IP

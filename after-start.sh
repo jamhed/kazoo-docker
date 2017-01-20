@@ -25,6 +25,7 @@ git clone --depth 1 --no-single-branch https://github.com/2600hz/kazoo-sounds
 docker cp kazoo-sounds/kazoo-core/en/us kazoo.$NETWORK:/home/user
 sup kazoo_media_maintenance import_prompts /home/user/us en-us
 docker exec -i --user root kazoo.$NETWORK rm -rf us
+rm -rf kazoo-sounds
 
 echo enable monster-ui applications
 docker cp monster-ui.$NETWORK:/usr/share/nginx/html/apps apps
