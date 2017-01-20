@@ -1,6 +1,12 @@
 Kazoo Docker Deployment
 =======================
 
+Preface
+=======
+
+This is production (stripped down to bare minimum) version of [Kazoo Docker](https://github.com/2600hz/docker). If you plan
+to alter source code or to develop features please consider it.
+
 Init
 ====
 

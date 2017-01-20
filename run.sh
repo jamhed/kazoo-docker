@@ -1,6 +1,5 @@
 #!/bin/sh
-NETWORK=${1:-"kazoo"}
-export NETWORK
+export NETWORK=${NETWORK:-"kazoo"}
 echo -n "starting network: $NETWORK "
 docker network create $NETWORK
 
