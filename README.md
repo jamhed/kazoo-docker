@@ -164,5 +164,3 @@ TODO
 ====
 
 1. Make Couchdb database persistent
-2. Add Nginx to proxy requests inside Kazoo instance
-3. Add rules to route RTP traffic inside Kazoo instance
