@@ -14,7 +14,6 @@ You need to have Docker version at least 1.9.0 (as this setup relies on docker n
 
 ```sh
 run.sh
-hosts.sh >> /etc/hosts
 ```
 
 You need to append /etc/hosts file to access Monster UI by URL http://monster-ui.kazoo:3000, and in turn it needs access to http://kazoo.kazoo:8000.
@@ -164,3 +163,4 @@ TODO
 ====
 
 1. Make Couchdb database persistent
+2. Complete deployment with external IP (script/example)
