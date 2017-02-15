@@ -7,18 +7,18 @@ Preface
 This is production (stripped down to bare minimum) version of [Kazoo Docker](https://github.com/2600hz/docker). If you plan
 to alter source code or to develop features please consider it.
 
+This is work in progress and this file will be updated when dust finally settles to describe actual node setup.
+
 Init
 ====
 
 You need to have Docker version at least 1.9.0 (as this setup relies on docker network heavily).
 
 ```sh
-run.sh
+./run.sh
 ```
 
-You need to append /etc/hosts file to access Monster UI by URL http://monster-ui.kazoo:3000, and in turn it needs access to http://kazoo.kazoo:8000.
-
-Please note each container run.sh and build.sh scripts should be run inside their respective folders.
+Please note each container's run.sh and build.sh scripts should be run inside their respective folders.
 
 After start
 ===========
