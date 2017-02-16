@@ -2,8 +2,11 @@
 FLAGS=${1:-"-td"}
 NETWORK=${NETWORK:-"kazoo"}
 NAME=kazoo.$NETWORK
-docker stop -t 1 $NAME
-docker rm -f $NAME
+if [ -n "$(docker ps -aq -f name=$NAME)" ]
+then
+	docker stop -t 1 $NAME
+	docker rm -f $NAME
+fi
 docker run $FLAGS \
 	--net $NETWORK \
 	-h $NAME \
