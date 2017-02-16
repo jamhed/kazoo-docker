@@ -4,6 +4,9 @@ command -v docker >/dev/null 2>&1 || { echo "Docker is required, but missing"; e
 command -v curl >/dev/null 2>&1 || { echo "Curl is required, but missing"; exit 1; }
 command -v iptables >/dev/null 2>&1 || { echo "iptables is required, but unaccessible (please run me as root)"; exit 1; }
 
+echo Enable system-wide routing, just in case.
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
 export NETWORK=${NETWORK:-"kazoo"}
 echo -n "starting network: $NETWORK "
 docker network create $NETWORK
