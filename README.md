@@ -18,8 +18,6 @@ You need to have Docker version at least 1.9.0 (as this setup relies on docker n
 ./run.sh
 ```
 
-Please note each container's run.sh and build.sh scripts should be run inside their respective folders.
-
 After start
 ===========
 
@@ -43,7 +41,7 @@ Kazoo sup
 =========
 
 Please note that sup script provided is a mere wrapper of `docker exec -ti kazoo.kazoo sup`. If you have several
-Kazoo instances installed, or have different network name, then the proper use will be `NETWORK=network\_name ./sup`
+Kazoo instances or used different network name then the proper use of sup script is `NETWORK=network_name ./sup [sup_args]`
 
 ```sh
 # Running apps
