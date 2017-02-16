@@ -176,3 +176,6 @@ TODO
 
 1. Make two instances of Kazoo to work together, probably on different hosts.
 2. Provide docker container with domain name server.
+3. Integrate Nginx with letsencrypt to setup HTTPS by default.
+4. Enable websockets by default.
+5. Provide a way to automatically test setup (with MakeBusy), either external or internal.
