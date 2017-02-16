@@ -37,16 +37,15 @@ Kazoo Erlang console
 
 ```sh
 docker exec -ti kazoo.kazoo ./run.sh remote_console
-# or
-cd kazoo ; ./console
 ```
 
 Kazoo sup
 =========
 
-```sh
-cd kazoo
+Please note that sup script provided is a mere wrapper of `docker exec -ti kazoo.kazoo sup`. If you have several
+Kazoo instances installed, or have different network name, then the proper use will be `NETWORK=network\_name ./sup`
 
+```sh
 # Running apps
 ./sup kapps_controller running_apps
 
@@ -162,5 +161,4 @@ cd kazoo
 TODO
 ====
 
-1. Make Couchdb database persistent
-2. Complete deployment with external IP (script/example)
+1. Complete deployment with external IP (script/example)
