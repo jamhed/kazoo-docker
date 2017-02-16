@@ -7,28 +7,60 @@ Preface
 This is production (stripped down to bare minimum) version of [Kazoo Docker](https://github.com/2600hz/docker). If you plan
 to alter source code or to develop features please consider it.
 
-This is work in progress and this file will be updated when dust finally settles to describe actual node setup.
+
+Notes
+=====
+
+The intended use case is to quickly convert a VPS with Docker to complete Kazoo instance. Installation scripts
+tries to automatically determine hosts external IP address and deduce Kazoo API URL from it. This could be
+overriden with `KAZOO_URL` environment variable.
+
+As Kazoo differentiate clients by realms, and realms are domains, you also need to have a dedicated domain
+name server that could resolve all subdomains to single Kazoo IP address. Same could be done manually if number of
+sub-accounts is small.
+
+In order to make Kazoo instance useful one also needs a VoIP carrier to provide PSTN numbers to dial into Kazoo,
+and same/another VoIP carrier to handle outgoing calls. 
+
+There is a docker volume `couchdb-data` to persistently store all Kazoo data. In case to get a clean install
+this volume should be removed with `docker volume rm NAME` command.
+
+Each container is parametrized by NETWORK envirinment variable, with default value set to `kazoo`. By defining 
+this variable it is possible to run several Kazoo instances on the same host.
+
+Networking
+==========
+
+There is a Nginx container provided to route HTTP requests to Monster UI (main Kazoo frontend) and to Kazoo API itself
+with exposed HTTP port 80. UDP port 5060 is exposed by Docker to provide access to Kazoo Kamailio instance to enable
+SIP devices to register and make calls. Provided FreeSWITCH instances are parametrized by RTP port range
+(1000 ports per container by default), and there are some manual iptables manipulations in `run-freeswitch.sh`
+script to route RTP traffic to the specific FreeSWITCH container.
 
 Init
 ====
 
 You need to have Docker version at least 1.9.0 (as this setup relies on docker network heavily).
+Also you need to make sure curl and git are installed, and iptables is runnable.
 
 ```sh
-./run.sh
+git clone https://github.com/jamhed/kazoo-docker
+cd kazoo-docker && ./run.sh
 ```
+
+You can stop the Kazoo instance with `stop.sh` script, and start it back with `start.sh` script anytime.
 
 After start
 ===========
 
-To initialize the system after clean start (with empty database) there is after-start.sh script that:
+To initialize the system after first run (with empty database) there is after-start.sh script that:
 
 1. Creates a master account admin with password admin
 2. Adds freeswitch node to Kazoo
 3. Registers sound prompts
 4. Registers Monster-UI 'apps'
 
-In order to make it work you need to wait some time after Kazoo container starts (while it creates databases).
+The `after-start.sh` script is called automatically by `run.sh`.
 
 Kazoo Erlang console
 ====================
@@ -40,10 +72,13 @@ docker exec -ti kazoo.kazoo ./run.sh remote_console
 Kazoo sup
 =========
 
-Please note that sup script provided is a mere wrapper of `docker exec -ti kazoo.kazoo sup`. If you have several
-Kazoo instances or used different network name then the proper use of sup script is `NETWORK=network_name ./sup [sup_args]`
+`sup` is a way to issue commands directly to Kazoo, please consult Kazoo documentation for more information.
+
+Please note that `sup` script provided here is a mere wrapper of `docker exec -ti kazoo.kazoo sup`. If you have several
+Kazoo instances on the same host or have used different network name then the proper use of sup script is `NETWORK=network_name ./sup [sup_args]`
 
 ```sh
+
 # Running apps
 ./sup kapps_controller running_apps
 
@@ -68,7 +103,7 @@ Sanity check
 
 ## Check Kazoo status (this is probably what you should see)
 
-```
+```sh
 $ docker exec kazoo.kazoo sup kz_nodes status
 
 Node          : kazoo@kazoo.kazoo
@@ -101,7 +136,7 @@ WhApps        : kamailio(17m37s)
 
 ## Check Kazoo knows about Kamailio instance
 
-```
+```sh
 $ docker exec kazoo.kazoo sup ecallmgr_maintenance acl_summary
 +--------------------------------+-------------------+---------------+-------+------------------+----------------------------------+
 | Name                           | CIDR               | List          | Type  | Authorizing Type | ID                               |
@@ -113,36 +148,14 @@ $ docker exec kazoo.kazoo sup ecallmgr_maintenance acl_summary
 ## Check Kamailio has FreeSwitch as dispatcher
 
 ```
-$ docker exec kamailio.kazoo kamcmd dispatcher.list
-{
-        NRSETS: 1
-        RECORDS: {
-                SET: {
-                        ID: 1
-                        TARGETS: {
-                                DEST: {
-                                        URI: sip:freeswitch.kazoo:11000
-                                        FLAGS: AP
-                                        PRIORITY: 1
-                                        ATTRS: {
-                                                BODY:  
-                                                DUID: 
-                                                MAXLOAD: 0
-                                                WEIGHT: 0
-                                                RWEIGHT: 0
-                                                SOCKET: 
-                                        }
-                                }
-                        }
-                }
-        }
-}
+$ docker exec kamailio.kazoo kamcmd dispatcher.list | grep URI
+URI: sip:freeswitch.kazoo:11000
 ```
 
 Monster-UI
 ==========
 
-How to register Monster-UI apps.
+How to register Monster-UI apps:
 
 1. You need to have monster-ui and kazoo images running
 2. You need to copy apps from monster-ui to kazoo
@@ -153,10 +166,13 @@ docker cp monster-ui.kazoo:/usr/share/nginx/html/dist/apps apps
 docker cp apps kazoo.kazoo:/home/user
 rm -rf apps
 cd kazoo
-./sup crossbar_maintenance init_apps /home/user/apps http://kazoo.kazoo:8000/v2
+./sup crossbar_maintenance init_apps /home/user/apps $KAZOO_URL
 ```
+
+After you have added applications to Kazoo you need to enable them to be accessible by users. You can do it using Kazoo Monster UI.
 
 TODO
 ====
 
-1. Complete deployment with external IP (script/example)
+1. Make two instances of Kazoo to work together, probably on different hosts.
+2. Provide docker container with domain name server.
