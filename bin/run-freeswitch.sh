@@ -27,5 +27,5 @@ docker exec $KAMAILIO dispatcher_add.sh 1 $NAME
 
 RTP_END_PORT=$( expr $RTP_START_PORT + 999 )
 IP=$(bin/get-ip.sh $NETWORK $NAME)
-echo -n "forwarding rtp range $RTP_START_PORT:$RTP_END_PORT to freeswitch $IP "
+echo "forwarding rtp range $RTP_START_PORT:$RTP_END_PORT to freeswitch $IP"
 iptables -t nat -A PREROUTING -p udp -m multiport --dport $RTP_START_PORT:$RTP_END_PORT -j DNAT --to-destination $IP
