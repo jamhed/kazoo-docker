@@ -29,3 +29,4 @@ RTP_END_PORT=$( expr $RTP_START_PORT + 999 )
 IP=$(bin/get-ip.sh $NETWORK $NAME)
 echo "forwarding rtp range $RTP_START_PORT:$RTP_END_PORT to freeswitch $IP"
 iptables -t nat -A PREROUTING -p udp -m multiport --dport $RTP_START_PORT:$RTP_END_PORT -j DNAT --to-destination $IP
+iptables -A FORWARD -p udp -m multiport --dport  $RTP_START_PORT:$RTP_END_PORT -d $IP -j ACCEPT
