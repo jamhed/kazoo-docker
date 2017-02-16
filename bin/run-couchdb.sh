@@ -10,10 +10,13 @@ then
    echo -n "removing: "
    docker rm -f $NAME
 fi
-echo -n "starting: $NAME "
 
+docker volume create kazoo-couchdb-data
+
+echo -n "starting: $NAME "
 docker run $FLAGS \
 	--net $NETWORK \
 	-h $NAME \
 	--name $NAME \
+	-v kazoo-couchdb-data:/usr/local/var/lib/couchdb \
 	2600hz/couchdb
