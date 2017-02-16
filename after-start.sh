@@ -7,7 +7,7 @@ echo wait for kazoo.$NETWORK to start '(you may check docker logs if impatient)'
 watch -g "docker logs kazoo.$NETWORK | grep 'auto-started kapps'" > /dev/null
 
 echo -n "create master account: "
-sup crossbar_maintenance create_account admin kamailio.$NETWORK admin admin
+sup crossbar_maintenance create_account admin admin admin admin
 echo -n "add freeswitch to kazoo: "
 sup ecallmgr_maintenance add_fs_node freeswitch@freeswitch.$NETWORK
 
