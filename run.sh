@@ -11,11 +11,11 @@ docker network create $NETWORK
 if [ -z "$KAZOO_URI" ]
 then
 	EXT_IP=$(curl -s ipinfo.io/ip)
-	echo "Guessing our Kazoo API uri: http://$EXT_IP/api/v2"
+	echo "Guessing our Kazoo API uri: http://$EXT_IP/v2/"
 	echo "Please specify it in KAZOO_URI env variable, e.g. http://your-server.domain, without api/v2 part, see nginx config"
 	KAZOO_URI=http://$EXT_IP
 fi
-export KAZOO_URL=${KAZOO_URL:-"$KAZOO_URI/api/v2/"}
+export KAZOO_URL=${KAZOO_URL:-"$KAZOO_URI/v2/"}
 
 for SERVICE in rabbitmq couchdb kazoo kamailio freeswitch monster-ui
 do
