@@ -22,7 +22,9 @@ do
 	bin/run-${SERVICE}.sh
 done
 
-cd nginx && ./build.sh && ./run.sh
+echo Building and starting nginx frontend to Kazoo
+cd nginx && ./build.sh && ./run.sh && cd ../
+
 echo Going to configure Kazoo, please wait for system to start up...
 ./after-start.sh
 
