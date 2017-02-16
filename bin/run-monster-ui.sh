@@ -1,6 +1,7 @@
 #!/bin/sh
 FLAGS=${1:-"-td"}
 NETWORK=${NETWORK:-"kazoo"}
+KAZOO_URL=${KAZOO_URL:-"http://kazoo.$NETWORK:8000/v2/"}
 NAME=monster-ui.$NETWORK
 if [ -n "$(docker ps -aq -f name=$NAME)" ]
 then
@@ -15,5 +16,5 @@ docker run $FLAGS \
 	-h $NAME \
 	--name $NAME \
 	--env NETWORK=$NETWORK \
-	--env KAZOO=kazoo.$NETWORK \
+	--env KAZOO_URL=$KAZOO_URL \
 	2600hz/monster-ui

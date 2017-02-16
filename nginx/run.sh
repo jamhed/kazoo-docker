@@ -16,5 +16,6 @@ docker run $FLAGS \
         -h $NAME \
         --name $NAME \
         -p 80:80 \
+        -e NETWORK=$NETWORK \
         2600hz/nginx
 

@@ -5,8 +5,10 @@ KAZOO_APPS=${APPS:-"sysconf,blackhole,callflow,cdr,conference,crossbar,fax,hangu
 NAME=kazoo.$NETWORK
 if [ -n "$(docker ps -aq -f name=$NAME)" ]
 then
-	docker stop -t 1 $NAME
-	docker rm -f $NAME
+   echo -n "stopping: "
+   docker stop -t 1 $NAME
+   echo -n "removing: "
+   docker rm -f $NAME
 fi
 echo -n "starting kazoo with apps: $KAZOO_APPS "
 docker run $FLAGS \
