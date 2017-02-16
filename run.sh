@@ -15,7 +15,7 @@ then
 	echo "Please specify it in KAZOO_URI env variable, e.g. http://your-server.domain, without api/v2 part, see nginx config"
 	KAZOO_URI=http://$EXT_IP
 fi
-export KAZOO_URL=${KAZOO_URL:-"$KAZOO_URI/api/v2"}
+export KAZOO_URL=${KAZOO_URL:-"$KAZOO_URI/api/v2/"}
 
 for SERVICE in rabbitmq couchdb kazoo kamailio freeswitch monster-ui
 do
