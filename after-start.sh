@@ -10,9 +10,6 @@ sup crossbar_maintenance create_account admin kamailio.$NETWORK admin admin
 echo -n "add freeswitch to kazoo: "
 sup ecallmgr_maintenance add_fs_node freeswitch@freeswitch.$NETWORK
 
-echo -n "enable console debug: "
-sup kazoo_maintenance console_level debug
-
 echo wait fot freeswitch to complete connect
 watch -g "docker logs kazoo.$NETWORK | grep 'max_channel_cleanup_timeout_ms'" > /dev/null
 
