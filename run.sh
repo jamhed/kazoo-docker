@@ -25,3 +25,5 @@ done
 cd nginx && ./build.sh && ./run.sh
 echo Going to configure Kazoo, please wait for system to start up...
 ./after-start.sh
+
+echo Completed! Point your browser to $KAZOO_URI!
