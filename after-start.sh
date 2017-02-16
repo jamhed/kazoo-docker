@@ -1,5 +1,6 @@
 #!/bin/sh
 NETWORK=${NETWORK:-"kazoo"}
+KAZOO_URL=${KAZOO_URL:-"http://kazoo.$NETWORK/v2"}
 export PATH=$PATH:./
 
 echo wait for kazoo.$NETWORK to start '(you may check docker logs if impatient)'
@@ -28,7 +29,7 @@ echo enable monster-ui applications
 docker cp monster-ui.$NETWORK:/usr/share/nginx/html/apps apps
 docker cp apps kazoo.$NETWORK:/home/user
 rm -rf apps
-sup crossbar_maintenance init_apps /home/user/apps http://kazoo.$NETWORK:8000/v2
+sup crossbar_maintenance init_apps /home/user/apps $KAZOO_URL
 docker exec -i --user root kazoo.$NETWORK rm -rf apps
 
 echo refresh kamailio dispatcher
