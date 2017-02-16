@@ -5,5 +5,3 @@ do
 	IP=`docker inspect --format "{{ (index .NetworkSettings.Networks \"$NETWORK\").IPAddress }}" $NAME`
 	echo $NAME $IP
 done
-
-
