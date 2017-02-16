@@ -20,3 +20,7 @@ for SERVICE in rabbitmq couchdb kazoo kamailio freeswitch monster-ui
 do
 	bin/run-${SERVICE}.sh
 done
+
+cd nginx && ./build.sh && ./run.sh
+echo Going to configure Kazoo, please wait for system to start up...
+./after-start.sh
