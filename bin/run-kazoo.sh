@@ -17,5 +17,5 @@ docker run $FLAGS \
 	--env COUCHDB=couchdb.$NETWORK \
 	--env RABBITMQ=rabbitmq.$NETWORK \
 	--env NODE_NAME=kazoo \
-	--env KAZOO_APPS=KAZOO_APPS \
+	--env KAZOO_APPS=$KAZOO_APPS \
 	2600hz/kazoo
