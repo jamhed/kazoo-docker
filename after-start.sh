@@ -37,6 +37,4 @@ docker exec -i --user root kazoo.$NETWORK rm -rf apps
 echo refresh kamailio dispatcher
 docker exec -i kamailio.$NETWORK kamcmd dispatcher.reload 
 
-echo commit couchdb to couchdb-init
-docker commit couchdb.$NETWORK $NETWORK/couchdb-init
 cd ../
