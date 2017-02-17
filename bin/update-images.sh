@@ -1,2 +1,5 @@
 #!/bin/sh
-docker pull -f $(docker images --format {{.Repository}})
+for IMAGE in $(docker images --format {{.Repository}} | grep 2600hz | grep -v nginx)
+do
+	docker pull $IMAGE
+done
