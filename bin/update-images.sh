@@ -1,2 +1,2 @@
 #!/bin/sh
-docker pull -f $(docker images --format {{.Name}})
+docker pull -f $(docker images --format {{.Repository}})
