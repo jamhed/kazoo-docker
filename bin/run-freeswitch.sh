@@ -20,14 +20,11 @@ docker run $FLAGS \
 	--name $NAME \
 	--env RABBITMQ=$RABBITMQ \
 	--env RTP_START_PORT=$RTP_START_PORT \
+	--env EXT_IP=$EXT_IP \
 	2600hz/freeswitch
 
 echo -n "adding dispatcher $NAME to kamailio $KAMAILIO "
 docker exec $KAMAILIO dispatcher_add.sh 1 $NAME
-
-# i need this to make fs think all traffic except localhost is external (to use ext-ip)
-docker exec $NAME xmlstarlet edit --inplace -u '/configuration/settings/param[@name="local-network-acl"]/@value' -v loopback.auto conf/sip_profiles/sipinterface_1.xml
-docker exec $NAME xmlstarlet edit --inplace -u '/configuration/settings/param[@name="ext-rtp-ip"]/@value' -v $EXT_IP conf/sip_profiles/sipinterface_1.xml
 
 # idk why do i need this, but kamailio forwards to $EXT_IP:11000
 IP=$(bin/get-ip.sh $NETWORK $NAME)
