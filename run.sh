@@ -11,10 +11,16 @@ export NETWORK=${NETWORK:-"kazoo"}
 echo -n "starting network: $NETWORK "
 docker network create $NETWORK
 
+if [ -z "$EXT_IP" ]
+then
+	echo "Guessing our external IP address (if guess is wrong please export EXT_IP variable, this is important)"
+	EXT_IP=$(curl -s ipinfo.io/ip)
+	echo "External IP address: $EXT_IP"
+fi
+export EXT_IP=$EXT_IP
+
 if [ -z "$KAZOO_URI" ]
 then
-	EXT_IP=$(curl -s ipinfo.io/ip)
-	echo "Guessing our Kazoo API uri: http://$EXT_IP/v2/"
 	echo "Please specify it in KAZOO_URI env variable, e.g. http://your-server.domain, without /v2/ part, see nginx config"
 	KAZOO_URI=http://$EXT_IP
 fi

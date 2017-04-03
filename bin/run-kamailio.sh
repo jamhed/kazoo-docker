@@ -19,4 +19,5 @@ docker run $FLAGS \
 	-p 5060:5060/udp \
 	--env NETWORK=$NETWORK \
 	--env RABBITMQ=$RABBITMQ \
+	--env EXT_IP=$EXT_IP \
 	2600hz/kamailio

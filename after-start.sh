@@ -16,7 +16,9 @@ watch -g "docker logs kazoo.$NETWORK | grep 'fs sync complete'" > /dev/null
 
 IP=$(docker inspect --format "{{ (index .NetworkSettings.Networks \"$NETWORK\").IPAddress }}" kamailio.$NETWORK)
 echo -n "add kamailio to kazoo with ip $IP: "
-sup ecallmgr_maintenance allow_carrier kamailio.$NETWORK $IP
+sup ecallmgr_maintenance allow_sbc kamailio.$NETWORK $IP
+echo -n "add kamailio external to kazoo with ip $EXT_IP: "
+sup ecallmgr_maintenance allow_sbc kamailio-ext.$NETWORK $EXT_IP
 
 echo import default kazoo sounds
 git clone --depth 1 --no-single-branch https://github.com/2600hz/kazoo-sounds

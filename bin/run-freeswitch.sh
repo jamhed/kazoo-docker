@@ -25,8 +25,11 @@ docker run $FLAGS \
 echo -n "adding dispatcher $NAME to kamailio $KAMAILIO "
 docker exec $KAMAILIO dispatcher_add.sh 1 $NAME
 
-RTP_END_PORT=$( expr $RTP_START_PORT + 999 )
+# i need this to make fs think all traffic except localhost is external (to use ext-ip)
+docker exec $NAME xmlstarlet edit --inplace -u '/configuration/settings/param[@name="local-network-acl"]/@value' -v loopback.auto conf/sip_profiles/sipinterface_1.xml
+docker exec $NAME xmlstarlet edit --inplace -u '/configuration/settings/param[@name="ext-rtp-ip"]/@value' -v $EXT_IP conf/sip_profiles/sipinterface_1.xml
+
+# idk why do i need this, but kamailio forwards to $EXT_IP:11000
 IP=$(bin/get-ip.sh $NETWORK $NAME)
-echo "forwarding rtp range $RTP_START_PORT:$RTP_END_PORT to freeswitch $IP"
-iptables -t nat -A PREROUTING -p udp -m multiport --dport $RTP_START_PORT:$RTP_END_PORT -j DNAT --to-destination $IP
-iptables -A FORWARD -p udp -m multiport --dport  $RTP_START_PORT:$RTP_END_PORT -d $IP -j ACCEPT
+IF=$(ip route get $IP | grep dev | awk '{ print $3 }')
+iptables -t nat -A PREROUTING -i $IF -p udp --dport 11000 -j DNAT --to-destination $IP:11000
