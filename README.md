@@ -13,7 +13,7 @@ Notes
 
 The intended use case is to quickly convert a VPS with Docker to complete Kazoo instance. Installation scripts
 tries to automatically determine hosts external IP address and deduce Kazoo API URL from it. This could be
-overriden with `KAZOO_URL` environment variable.
+overriden with `KAZOO_URL` and/or `EXT_IP` environment variables.
 
 As Kazoo differentiate clients by realms, and realms are domains, you also need to have a dedicated domain
 name server that could resolve all subdomains to single Kazoo IP address. Same could be done manually if number of
@@ -33,9 +33,14 @@ Networking
 
 There is a Nginx container provided to route HTTP requests to Monster UI (main Kazoo frontend) and to Kazoo API itself
 with exposed HTTP port 80. UDP port 5060 is exposed by Docker to provide access to Kazoo Kamailio instance to enable
-SIP devices to register and make calls. Provided FreeSWITCH instances are parametrized by RTP port range
-(1000 ports per container by default), and there are some manual iptables manipulations in `run-freeswitch.sh`
-script to route RTP traffic to the specific FreeSWITCH container.
+SIP devices to register and make calls. 
+
+In order to make audio work few tweaks are performed:
+
+1. Kamailio local.conf is altered with `listen=UDP_SIP advertise EXT_IP:5060`
+2. FreeSWITCH is instructed to consider all traffic external, and `ext-rtp-ip` parameter is set to EXT_IP
+3. For the reason unknown DNAT rule is added to route UDP from Kamailio to FreeSWITCH in form of EXT_IP:11000 -> freeswitch.container.ip
+4. Kamailio is added as SBC (both container and external ip addresses)
 
 Init
 ====
